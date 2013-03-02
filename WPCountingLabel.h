@@ -8,10 +8,18 @@
 
 #import "CCLabelTTF.h"
 
+@protocol WPCountingLabelDelegate <NSObject>
+
+- (void)didFinishCountAnimation;
+
+@end
+
 @interface WPCountingLabel : CCLabelTTF {
     NSTimer *countTimer;
     NSInteger incremental;
 }
+
+@property (nonatomic, assign) id<WPCountingLabelDelegate>delegate;
 
 @property NSInteger from;
 @property NSInteger to;

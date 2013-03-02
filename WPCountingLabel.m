@@ -10,6 +10,8 @@
 
 @implementation WPCountingLabel
 
+@synthesize delegate;
+
 @synthesize from;
 @synthesize to;
 @synthesize numberOfRotations;
@@ -46,6 +48,10 @@
 - (void)countAnimationStop
 {
     [countTimer invalidate];
+    
+    if ([self.delegate respondsToSelector:@selector(didFinishCountAnimation)]) {
+        [self.delegate didFinishCountAnimation];        
+    }
 }
 
 /**
@@ -56,8 +62,9 @@
     NSInteger value = self.string.intValue;
     value += incremental;
     
-    if (value > self.to) {
+    if (value >= self.to) {
         value = self.to;
+        [self countAnimationStop];
     }
     
     self.string = [NSString stringWithFormat:@"%d", value];
